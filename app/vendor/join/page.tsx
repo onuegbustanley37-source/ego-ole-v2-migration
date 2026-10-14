@@ -1,20 +1,24 @@
-'use client'
-export default function Page(){
- return(
- <div style={{padding:20, textAlign:"center", background:"white", color:"black", minHeight:"100vh"}}>
-   <h1 style={{fontWeight:900,marginTop:15,color:'black'}}>RENT YOUR STALL</h1>
-   <p style={{color:'#b8960c',fontWeight:'bold',fontSize:22}}>₦2,000 per month</p>
-   <div style={{border:'2px solid #d4af37',textAlign:'left',padding:15,borderRadius:10,marginTop:15,color:'black',background:'#fffbeb'}}>
-    <b>PAYMENT DETAILS</b><br/>
-    Bank: UBA Bank<br/>
-    Name: Stanley Onuegbu<br/>
-    No: <b>2087484005</b><br/>
-    WhatsApp: 08161280254
-   </div>
-   <a href="https://wa.me/2348161280254?text=Hello%20EGO%20OLE%2C%20I%20paid%20N2000%20to%202087484005" style={{display:'block',background:'#d4af37',padding:16,marginTop:15,borderRadius:10,fontWeight:'bold',color:'black',textDecoration:'none'}}>
-    Pay on WhatsApp - Send Receipt
-   </a>
-   <p style={{fontSize:12,marginTop:10}}>Verification within 24 hours - EGO OLE? Live Market</p>
-  </div>
- )
+"use client"
+import Footer from "@/components/footer"
+
+export default function Page() {
+  return (
+    <>
+      <div style={{padding:20, textAlign:"center", background:"white", color:"black"}}>
+        <h1 style={{fontWeight:"bold", fontSize:22, marginBottom:20}}>RENT YOUR STALL (N12,500 PER MONTH)</h1>
+        
+        <div style={{border:"1px solid #ccc", textAlign:"left", padding:20, borderRadius:10, maxWidth:500, margin:"0 auto", background:"white"}}>
+          Bank: UBA BANK<br/>
+          Account Number: 2087484005<br/>
+          WhatsApp: 08161280254<br/><br/>
+          
+          <a href="https://wa.me/2348161280254?text=Hello%20I%20Want%20To%20Rent%20Stall%20-%20My%20Number%20is%202087484005" style={{display:"block", background:"black", color:"white", textAlign:"center", padding:12, borderRadius:8, textDecoration:"none", fontWeight:"bold"}}>
+            Pay on WhatsApp - Send Receipt
+          </a>
+          <p style={{marginTop:10, fontSize:12, textAlign:"center"}}>We will verify and activate your stall within 24 hours - EGO OLE Team</p>
+        </div>
+      </div>
+      <Footer />
+    </>
+  )
 }
