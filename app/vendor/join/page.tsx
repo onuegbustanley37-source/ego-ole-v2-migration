@@ -1,7 +1,7 @@
 'use client'
 export default function Page(){
  return(
-  <div style={{padding:20,textAlign:'center',background:'white',minHeight:'100vh',color:'black'}}>
+ <div style={{padding:20, textAlign:"center", background:"white", color:"black", minHeight:"100vh"}}>
    <h1 style={{fontWeight:900,marginTop:15,color:'black'}}>RENT YOUR STALL</h1>
    <p style={{color:'#b8960c',fontWeight:'bold',fontSize:22}}>₦2,000 per month</p>
    <div style={{border:'2px solid #d4af37',textAlign:'left',padding:15,borderRadius:10,marginTop:15,color:'black',background:'#fffbeb'}}>
