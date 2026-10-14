@@ -32,13 +32,13 @@ export function Footer() {
           </div>
 
           <a
-            href="https://wa.me/2348012345678?text=Hello%20from%20EGO%20OLE"
+            href="https://wa.me/2348161280254?text=Hello%20from%20EGO%20OLE"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 flex items-center gap-2 rounded-lg border border-green-500/20 bg-green-500/5 px-4 py-2 text-xs text-green-400/70 transition-colors hover:bg-green-500/10 hover:text-green-300"
           >
             <MessageCircle className="h-4 w-4" />
-            WhatsApp us: +234 801 234 5678
+            WhatsApp us: +234 816 128 0254
           </a>
 
           <p className="mt-2 text-[10px] text-white/20">
