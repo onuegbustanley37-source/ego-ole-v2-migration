@@ -1,99 +1,73 @@
-'use client';
+'use client'
+import { useState, useEffect } from 'react'
 
-import { FormEvent, useEffect, useState } from 'react';
-import { Upload, ShieldCheck } from 'lucide-react';
-import { markets } from '@/lib/mockData';
+export default function AdminUploadPage(){
+ const [pw,setPw]=useState('')
+ const [ok,setOk]=useState(false)
+ const [products,setProducts]=useState<any[]>([])
+ const [form,setForm]=useState({name:'',price:'',market:'Onitsha Main Market',category:'Fashion'})
 
-interface UploadRecord {
-  id: string;
-  product: string;
-  price: number;
-  marketId: string;
-  createdAt: string;
-}
+ useEffect(()=>{
+  if(localStorage.getItem('isAdmin')==='true') setOk(true)
+  const saved = localStorage.getItem('ego-products')
+  if(saved) setProducts(JSON.parse(saved))
+ },[])
 
-export default function AdminUploadPage() {
-  const [authorized, setAuthorized] = useState(false);
-  const [product, setProduct] = useState('');
-  const [price, setPrice] = useState('');
-  const [marketId, setMarketId] = useState(markets[0]?.id ?? '');
-  const [message, setMessage] = useState('');
+ if(!ok) return(
+  <div style={{padding:40,textAlign:'center',background:'black',minHeight:'100vh',color:'white'}}>
+   <h1 style={{color:'#d4af37'}}>EGO OLE? ADMIN LOGIN</h1>
+   <p>Enter password to access upload area</p>
+   <input type="password" value={pw} onChange={e=>setPw(e.target.value)} placeholder="Password" style={{padding:15,width:'90%',borderRadius:10,marginTop:15,color:'black'}}/>
+   <br/>
+   <button onClick={()=>{
+    if(pw==='Stanley2024'){localStorage.setItem('isAdmin','true'); setOk(true)}
+    else alert('Wrong password! Use Stanley2024')
+   }} style={{marginTop:20,padding:15,background:'#d4af37',border:'none',borderRadius:10,fontWeight:'bold',width:'90%',color:'black'}}>UNLOCK UPLOAD</button>
+   <p style={{marginTop:15,fontSize:12,color:'#d4af37'}}>Password: Stanley2024</p>
+  </div>
+ )
 
-  useEffect(() => {
-    const alreadyAuthorized = window.localStorage.getItem('ego-ole-admin-authorized') === 'true';
-    if (alreadyAuthorized || window.prompt('Enter admin code') === 'EKE2024') {
-      window.localStorage.setItem('ego-ole-admin-authorized', 'true');
-      setAuthorized(true);
-    }
-  }, []);
+ const handleAdd = ()=>{
+  if(!form.name || !form.price) return alert('Enter name and price')
+  const newP = {...form, id: Date.now()}
+  const updated = [...products, newP]
+  setProducts(updated)
+  localStorage.setItem('ego-products', JSON.stringify(updated))
+  setForm({name:'',price:'',market:'Onitsha Main Market',category:'Fashion'})
+  alert('Product Added! ✅')
+ }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const numericPrice = Number(price);
-    if (!product.trim() || !Number.isFinite(numericPrice) || numericPrice <= 0 || !marketId) {
-      setMessage('Enter a product, a valid price, and a market.');
-      return;
-    }
+ return(
+  <div style={{padding:20,background:'white',minHeight:'100vh',color:'black'}}>
+   <h1 style={{textAlign:'center'}}>✅ Admin Unlocked</h1>
+   <p style={{textAlign:'center'}}>Welcome Stanley! Upload products for EGO OLE?</p>
+   
+   <div style={{maxWidth:500,margin:'20px auto',border:'2px solid #d4af37',padding:20,borderRadius:12}}>
+    <h3>Add New Product</h3>
+    <input placeholder="Product Name e.g. Lace Fabric" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} style={{padding:12,width:'100%',marginTop:10,borderRadius:8,border:'1px solid #ccc'}}/>
+    <input placeholder="Price e.g. 15000" value={form.price} onChange={e=>setForm({...form,price:e.target.value})} type="number" style={{padding:12,width:'100%',marginTop:10,borderRadius:8,border:'1px solid #ccc'}}/>
+    <select value={form.market} onChange={e=>setForm({...form,market:e.target.value})} style={{padding:12,width:'100%',marginTop:10,borderRadius:8}}>
+     <option>Onitsha Main Market</option>
+     <option>Head Bridge Market</option>
+     <option>Ochanja Market</option>
+     <option>3-3 Market</option>
+    </select>
+    <select value={form.category} onChange={e=>setForm({...form,category:e.target.value})} style={{padding:12,width:'100%',marginTop:10,borderRadius:8}}>
+     <option>Fashion</option>
+     <option>Electronics</option>
+     <option>Food</option>
+     <option>Building Materials</option>
+    </select>
+    <button onClick={handleAdd} style={{marginTop:15,padding:15,background:'#d4af37',border:'none',borderRadius:10,fontWeight:'bold',width:'100%',color:'black'}}>ADD PRODUCT</button>
+   </div>
 
-    const stored = window.localStorage.getItem('ego-ole-price-uploads');
-    const uploads: UploadRecord[] = stored ? JSON.parse(stored) : [];
-    uploads.push({
-      id: crypto.randomUUID(),
-      product: product.trim(),
-      price: numericPrice,
-      marketId,
-      createdAt: new Date().toISOString(),
-    });
-    window.localStorage.setItem('ego-ole-price-uploads', JSON.stringify(uploads));
-    setProduct('');
-    setPrice('');
-    setMessage('Price saved on this device.');
-  };
+   <div style={{maxWidth:500,margin:'20px auto'}}>
+    <h3>Uploaded Products ({products.length})</h3>
+    {products.map((p:any)=><div key={p.id} style={{border:'1px solid #eee',padding:10,marginTop:8,borderRadius:8,display:'flex',justifyContent:'space-between'}}><span>{p.name} - ₦{p.price}</span><span style={{fontSize:12}}>{p.market}</span></div>)}
+   </div>
 
-  if (!authorized) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center bg-black px-4 text-center">
-        <div className="glass-card-gold max-w-md rounded-2xl p-8">
-          <ShieldCheck className="mx-auto h-10 w-10 text-gold" />
-          <h1 className="mt-4 text-xl font-bold text-white">Admin access required</h1>
-          <p className="mt-2 text-sm text-white/50">This upload area is restricted to approved administrators.</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-[60vh] bg-black px-4 py-10 sm:px-6">
-      <div className="mx-auto max-w-xl">
-        <div className="mb-6 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold/10">
-            <Upload className="h-5 w-5 text-gold" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-black text-white">Upload a market price</h1>
-            <p className="text-sm text-white/40">Saved locally until a shared database is connected.</p>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="glass-card-gold rounded-2xl p-5 sm:p-6">
-          <label className="block text-xs font-semibold text-white/60" htmlFor="product">Product</label>
-          <input id="product" value={product} onChange={(event) => setProduct(event.target.value)} className="mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-gold/50" placeholder="e.g. Bag of Rice (50kg)" />
-
-          <label className="mt-4 block text-xs font-semibold text-white/60" htmlFor="price">Price in naira</label>
-          <input id="price" type="number" min="1" value={price} onChange={(event) => setPrice(event.target.value)} className="mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-gold/50" placeholder="78000" />
-
-          <label className="mt-4 block text-xs font-semibold text-white/60" htmlFor="market">Market</label>
-          <select id="market" value={marketId} onChange={(event) => setMarketId(event.target.value)} className="mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-3 text-sm text-white outline-none focus:border-gold/50">
-            {markets.map((market) => <option key={market.id} value={market.id} className="bg-black">{market.name}</option>)}
-          </select>
-
-          <button type="submit" className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-gold px-4 py-3 text-sm font-bold text-black transition-colors hover:bg-gold/90">
-            <Upload className="h-4 w-4" />
-            Save Price
-          </button>
-          {message && <p className="mt-3 text-center text-xs text-gold">{message}</p>}
-        </form>
-      </div>
-    </div>
-  );
+   <a href="/" style={{display:'block',background:'black',padding:15,marginTop:20,borderRadius:10,fontWeight:'bold',color:'white',textDecoration:'none',textAlign:'center',maxWidth:500,marginLeft:'auto',marginRight:'auto'}}>Go to Home</a>
+   <button onClick={()=>{localStorage.removeItem('isAdmin'); setOk(false)}} style={{display:'block',background:'#eee',padding:10,marginTop:10,borderRadius:10,width:'100%',maxWidth:500,marginLeft:'auto',marginRight:'auto'}}>Logout</button>
+  </div>
+ )
 }
