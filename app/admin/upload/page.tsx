@@ -20,10 +20,10 @@ export default function AdminUploadPage(){
    <input type="password" value={pw} onChange={e=>setPw(e.target.value)} placeholder="Password" style={{padding:15,width:'90%',borderRadius:10,marginTop:15,color:'black'}}/>
    <br/>
    <button onClick={()=>{
-    if(pw==='Stanley2024'){localStorage.setItem('isAdmin','true'); setOk(true)}
-    else alert('Wrong password! Use Stanley2024')
+    if(pw==='stanley1991'){localStorage.setItem('isAdmin','true'); setOk(true)}
+    else alert('Wrong password! Use stanley1991')
    }} style={{marginTop:20,padding:15,background:'#d4af37',border:'none',borderRadius:10,fontWeight:'bold',width:'90%',color:'black'}}>UNLOCK UPLOAD</button>
-   <p style={{marginTop:15,fontSize:12,color:'#d4af37'}}>Password: Stanley2024</p>
+   <p style={{marginTop:15,fontSize:12,color:'#d4af37'}}>Password: stanley1991</p>
   </div>
  )
 
@@ -59,11 +59,6 @@ export default function AdminUploadPage(){
      <option>Building Materials</option>
     </select>
     <button onClick={handleAdd} style={{marginTop:15,padding:15,background:'#d4af37',border:'none',borderRadius:10,fontWeight:'bold',width:'100%',color:'black'}}>ADD PRODUCT</button>
-   </div>
-
-   <div style={{maxWidth:500,margin:'20px auto'}}>
-    <h3>Uploaded Products ({products.length})</h3>
-    {products.map((p:any)=><div key={p.id} style={{border:'1px solid #eee',padding:10,marginTop:8,borderRadius:8,display:'flex',justifyContent:'space-between'}}><span>{p.name} - ₦{p.price}</span><span style={{fontSize:12}}>{p.market}</span></div>)}
    </div>
 
    <a href="/" style={{display:'block',background:'black',padding:15,marginTop:20,borderRadius:10,fontWeight:'bold',color:'white',textDecoration:'none',textAlign:'center',maxWidth:500,marginLeft:'auto',marginRight:'auto'}}>Go to Home</a>
