@@ -2,6 +2,7 @@ import { Item, getMarketById, getVendorById } from '@/lib/mockData';
 import { formatNaira } from '@/lib/igboCalendar';
 import { MapPin, MessageCircle, TrendingDown, Star } from 'lucide-react';
 import Link from 'next/link';
+import { vendorWhatsappUrl } from '@/lib/config';
 
 interface ProductCardProps {
   item: Item;
@@ -18,9 +19,7 @@ export function ProductCard({ item }: ProductCardProps) {
     ? `I'm buying from EGO OLE? — ${item.name} for ${formatNaira(item.price)} from ${vendor.name}.`
     : `I'm buying from EGO OLE? — ${item.name} for ${formatNaira(item.price)}.`;
 
-  const whatsappUrl = vendor
-    ? `https://wa.me/${vendor.phone}?text=${encodeURIComponent(whatsappText)}`
-    : `https://wa.me/2348012345678?text=${encodeURIComponent(whatsappText)}`;
+  const whatsappUrl = vendorWhatsappUrl(vendor?.phone, whatsappText);
 
   return (
     <div className="group glass-card relative overflow-hidden rounded-xl transition-all duration-300 hover:border-gold/30 hover:shadow-lg hover:shadow-gold/5">

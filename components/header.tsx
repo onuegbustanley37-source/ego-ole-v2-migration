@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, X, TrendingUp, Store, Home as HomeIcon, Bell, Upload } from 'lucide-react';
+import { Menu, X, TrendingUp, Store, Home as HomeIcon, Bell, Upload, KeyRound } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
   { href: '/', label: 'Home', icon: HomeIcon },
   { href: '/prices', label: 'Prices', icon: TrendingUp },
   { href: '/stalls', label: 'Stalls', icon: Store },
+  { href: '/vendor/join', label: 'Rent Stall', icon: KeyRound },
 ];
 
 export function Header() {
@@ -120,3 +121,5 @@ export function Header() {
     </header>
   );
 }
+
+export default Header;

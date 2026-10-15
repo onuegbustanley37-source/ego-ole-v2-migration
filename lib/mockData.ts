@@ -1,4 +1,5 @@
 // Mock data for EGO OLE? V2 — SE Nigerian markets
+import { BANK } from './config';
 
 export interface Market {
   id: string;
@@ -19,6 +20,7 @@ export interface Item {
   image: string;
   unit: string;
   vendorId?: string;
+  tags?: string[];
 }
 
 export interface Vendor {
@@ -76,11 +78,14 @@ export const vendors: Vendor[] = [
   { id: 'v09', name: 'Eze Dried Fish Depot', phone: '2348090123456', marketId: 'm16', rating: 4.4, banner: 'https://images.pexels.com/photos/36943006/pexels-photo-36943006.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', location: 'Stall I-12, Abakpa Market', specialty: 'Dried Fish & Seafood' },
   { id: 'v10', name: 'Glam Heels Boutique', phone: '2348011223344', marketId: 'm03', rating: 4.7, banner: 'https://images.pexels.com/photos/11911863/pexels-photo-11911863.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', location: 'Shop J-89, Nkwo Nnewi', specialty: 'High Heels & Sandals' },
   { id: 'v11', name: 'Oma Produce Dealer', phone: '2348022334455', marketId: 'm19', rating: 4.3, banner: 'https://images.pexels.com/photos/38968336/pexels-photo-38968336.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', location: 'Stall K-21, Relief Market Owerri', specialty: 'Foodstuff & Grains' },
+  { id: 'v13', name: 'Ifite Ogwari Okro Farm', phone: BANK.whatsappLink.replace('https://wa.me/', ''), marketId: 'm01', rating: 5.0, banner: '/images/ifite-ogwari-okro.png', location: 'Ifite Ogwari, Anambra', specialty: 'Small tender fresh okro' },
   { id: 'v12', name: 'Stella Leather Works', phone: '2348033445566', marketId: 'm06', rating: 4.8, banner: 'https://images.pexels.com/photos/8311880/pexels-photo-8311880.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', location: 'Shop L-50, Ariaria Aba', specialty: 'Leather Bags' },
 ];
 
 // ─── 30+ Items (Bags, Shoes, Wigs, Clothes + Foodstuff) ────────
 export const items: Item[] = [
+  { id: 'i00', name: 'Ifite Ogwari Okro (Small Tender Fresh)', category: 'Foodstuff', price: 1500, oldPrice: 2500, marketId: 'm01', vendorId: 'v13', image: '/images/ifite-ogwari-okro.png', unit: 'per paint bucket', tags: ['okro', 'okra', 'okwuru', 'ifite', 'ogwari', 'ifite ogwari', 'small', 'tender', 'fresh', 'vegetable'] },
+  { id: 'i00b', name: 'Ifite Ogwari Okro - Bag', category: 'Foodstuff', price: 18000, oldPrice: 24000, marketId: 'm01', vendorId: 'v13', image: '/images/ifite-ogwari-okro.png', unit: 'per bag', tags: ['okro', 'okra', 'okwuru', 'ifite', 'ogwari', 'ifite ogwari', 'small', 'tender', 'fresh', 'vegetable', 'wholesale'] },
   // BAGS (8)
   { id: 'i01', name: 'Python Print Handbag', category: 'Bags', price: 28500, oldPrice: 35000, marketId: 'm01', vendorId: 'v01', image: 'https://images.pexels.com/photos/27174539/pexels-photo-27174539.jpeg?auto=compress&cs=tinysrgb&h=400&w=400', unit: 'piece' },
   { id: 'i02', name: 'Crocodile Pattern Bag', category: 'Bags', price: 32000, marketId: 'm06', vendorId: 'v12', image: 'https://images.pexels.com/photos/27046143/pexels-photo-27046143.jpeg?auto=compress&cs=tinysrgb&h=400&w=400', unit: 'piece' },
@@ -229,4 +234,21 @@ export function getFeaturedVendors(limit: number = 6): Vendor[] {
     .slice()
     .sort((a, b) => b.rating - a.rating)
     .slice(0, limit);
+}
+
+export function getItemSearchFields(item: Item): string[] {
+  const market = getMarketById(item.marketId);
+  const vendor = item.vendorId ? getVendorById(item.vendorId) : undefined;
+  return [
+    item.name,
+    item.category,
+    item.unit,
+    ...(item.tags ?? []),
+    market?.name ?? '',
+    market?.lga ?? '',
+    market?.state ?? '',
+    vendor?.name ?? '',
+    vendor?.specialty ?? '',
+    vendor?.location ?? '',
+  ];
 }
